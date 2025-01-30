@@ -1,5 +1,5 @@
 use crate::config::{CommonConfig, TruncateMode};
-use crate::gtk_helpers::IronbarLabelExt;
+use crate::gtk_helpers::{IronbarGtkExt, IronbarLabelExt};
 use crate::modules::{Module, ModuleInfo, ModuleParts, ModuleUpdateEvent, WidgetContext};
 use crate::{await_sync, glib_recv, module_impl, try_send};
 use color_eyre::{Report, Result};

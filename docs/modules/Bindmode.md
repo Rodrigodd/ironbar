@@ -19,7 +19,7 @@ in a label. If the current sway mode is "default", nothing is displayed.
 {
   "end": [
     {
-      "type": "sway-mode",
+      "type": "bindmode",
       "truncate": "start"
     }
   ]
@@ -33,7 +33,7 @@ in a label. If the current sway mode is "default", nothing is displayed.
 
 ```toml
 [[end]]
-type = "sway-mode"
+type = "bindmode"
 truncate = "start"
 ```
 
@@ -44,7 +44,7 @@ truncate = "start"
 
 ```yaml
 end:
-  - type: "sway-mode"
+  - type: "bindmode"
     truncate: "start"
 ```
 
@@ -57,7 +57,7 @@ end:
 {
   end = [
     {
-      type = "sway-mode"
+      type = "bindmode"
       truncate = "start"
     }
   ]
