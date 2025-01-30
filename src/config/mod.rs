@@ -11,6 +11,8 @@ use crate::modules::clock::ClockModule;
 use crate::modules::custom::CustomModule;
 #[cfg(feature = "focused")]
 use crate::modules::focused::FocusedModule;
+#[cfg(feature = "hyprland")]
+use crate::modules::hyrland::submap::HyprlandSubmapModule;
 use crate::modules::label::LabelModule;
 #[cfg(feature = "launcher")]
 use crate::modules::launcher::LauncherModule;
@@ -73,6 +75,8 @@ pub enum ModuleConfig {
     SysInfo(Box<SysInfoModule>),
     #[cfg(feature = "sway")]
     SwayMode(Box<SwayModeModule>),
+    #[cfg(feature = "hyprland")]
+    HyprlandSubmap(Box<HyprlandSubmapModule>),
     #[cfg(feature = "tray")]
     Tray(Box<TrayModule>),
     #[cfg(feature = "upower")]
@@ -120,6 +124,8 @@ impl ModuleConfig {
             Self::SysInfo(module) => create!(module),
             #[cfg(feature = "sway")]
             Self::SwayMode(module) => create!(module),
+            #[cfg(feature = "hyprland")]
+            Self::HyprlandSubmap(module) => create!(module),
             #[cfg(feature = "tray")]
             Self::Tray(module) => create!(module),
             #[cfg(feature = "upower")]

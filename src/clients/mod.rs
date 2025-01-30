@@ -34,6 +34,8 @@ pub struct Clients {
     #[cfg(feature = "workspaces")]
     workspaces: Option<Arc<dyn compositor::WorkspaceClient>>,
     #[cfg(feature = "sway")]
+    hyprland: Option<Arc<compositor::hyprland::Client>>,
+    #[cfg(feature = "sway")]
     sway: Option<Arc<sway::Client>>,
     #[cfg(feature = "clipboard")]
     clipboard: Option<Arc<clipboard::Client>>,
@@ -82,6 +84,21 @@ impl Clients {
             None => {
                 let client = compositor::Compositor::create_workspace_client(self)?;
                 self.workspaces.replace(client.clone());
+                client
+            }
+        };
+
+        Ok(client)
+    }
+
+    #[cfg(feature = "hyprland")]
+    pub fn hyprland(&mut self) -> ClientResult<compositor::hyprland::Client> {
+        let client = match &self.hyprland {
+            Some(client) => client.clone(),
+            None => {
+                let client = compositor::hyprland::Client::new();
+                let client = Arc::new(client);
+                self.hyprland.replace(client.clone());
                 client
             }
         };

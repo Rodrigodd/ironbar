@@ -28,6 +28,18 @@ impl Client {
         instance
     }
 
+    pub(crate) fn listen_submap_events(&self, callback: impl Fn(String) + Send + 'static) {
+        spawn_blocking(move || {
+            let mut event_listener = EventListener::new();
+
+            event_listener.add_sub_map_change_handler(callback);
+
+            event_listener
+                .start_listener()
+                .expect("Failed to start listener");
+        });
+    }
+
     fn listen_workspace_events(&self) {
         info!("Starting Hyprland event listener");
 

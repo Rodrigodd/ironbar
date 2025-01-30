@@ -67,7 +67,9 @@ impl Compositor {
                 .sway()
                 .map(|client| client as Arc<dyn WorkspaceClient + Send + Sync>),
             #[cfg(feature = "workspaces+hyprland")]
-            Self::Hyprland => Ok(Arc::new(hyprland::Client::new())),
+            Self::Hyprland => clients
+                .hyprland()
+                .map(|client| client as Arc<dyn WorkspaceClient + Send + Sync>),
             Self::Unsupported => Err(Report::msg("Unsupported compositor")
                 .note("Currently workspaces are only supported by Sway and Hyprland")),
         }
