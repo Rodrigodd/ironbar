@@ -16,6 +16,8 @@ use crate::gtk_helpers::{IronbarGtkExt, WidgetGeometry};
 use crate::popup::Popup;
 use crate::{glib_recv_mpsc, send, Ironbar};
 
+#[cfg(any(feature = "hyprland", feature = "sway"))]
+pub mod bindmode;
 #[cfg(feature = "cairo")]
 pub mod cairo;
 #[cfg(feature = "clipboard")]
@@ -43,8 +45,6 @@ pub mod networkmanager;
 #[cfg(feature = "notifications")]
 pub mod notifications;
 pub mod script;
-#[cfg(feature = "sway")]
-pub mod sway;
 #[cfg(feature = "sys_info")]
 pub mod sysinfo;
 #[cfg(feature = "tray")]
