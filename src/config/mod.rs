@@ -2,6 +2,8 @@ mod common;
 mod r#impl;
 mod truncate;
 
+#[cfg(any(feature = "hyprland", feature = "sway"))]
+use crate::modules::bindmode::Bindmode;
 #[cfg(feature = "cairo")]
 use crate::modules::cairo::CairoModule;
 #[cfg(feature = "clipboard")]
@@ -11,8 +13,6 @@ use crate::modules::clock::ClockModule;
 use crate::modules::custom::CustomModule;
 #[cfg(feature = "focused")]
 use crate::modules::focused::FocusedModule;
-#[cfg(any(feature = "hyprland", feature = "sway"))]
-use crate::modules::keymode::Keymode;
 use crate::modules::label::LabelModule;
 #[cfg(feature = "launcher")]
 use crate::modules::launcher::LauncherModule;
@@ -72,9 +72,9 @@ pub enum ModuleConfig {
     #[cfg(feature = "sys_info")]
     SysInfo(Box<SysInfoModule>),
     #[cfg(feature = "sway")]
-    SwayMode(Box<Keymode>),
+    SwayMode(Box<Bindmode>),
     #[cfg(any(feature = "sway", feature = "hyprland"))]
-    Keymode(Box<Keymode>),
+    Bindmode(Box<Bindmode>),
     #[cfg(feature = "tray")]
     Tray(Box<TrayModule>),
     #[cfg(feature = "upower")]
@@ -131,7 +131,7 @@ impl ModuleConfig {
             #[cfg(feature = "workspaces")]
             Self::Workspaces(module) => create!(module),
             #[cfg(any(feature = "hyprland", feature = "sway"))]
-            Self::Keymode(module) => create!(module),
+            Self::Bindmode(module) => create!(module),
         }
     }
 }

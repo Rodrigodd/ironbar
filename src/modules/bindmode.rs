@@ -19,7 +19,7 @@ pub struct ModeEvent {
 
 #[derive(Debug, Deserialize, Clone)]
 #[cfg_attr(feature = "schema", derive(schemars::JsonSchema))]
-pub struct Keymode {
+pub struct Bindmode {
     // -- Common --
     /// See [truncate options](module-level-options#truncate-mode).
     ///
@@ -31,11 +31,11 @@ pub struct Keymode {
     pub common: Option<CommonConfig>,
 }
 
-impl Module<Label> for Keymode {
+impl Module<Label> for Bindmode {
     type SendMessage = ModeEvent;
     type ReceiveMessage = ();
 
-    module_impl!("keymode");
+    module_impl!("bindmode");
 
     fn spawn_controller(
         &self,
@@ -43,7 +43,7 @@ impl Module<Label> for Keymode {
         context: &WidgetContext<Self::SendMessage, Self::ReceiveMessage>,
         _rx: mpsc::Receiver<Self::ReceiveMessage>,
     ) -> Result<()> {
-        info!("Keymode module started");
+        info!("Bindmode module started");
 
         #[cfg(feature = "sway")]
         {
