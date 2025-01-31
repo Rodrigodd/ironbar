@@ -23,8 +23,6 @@ use crate::modules::networkmanager::NetworkManagerModule;
 #[cfg(feature = "notifications")]
 use crate::modules::notifications::NotificationsModule;
 use crate::modules::script::ScriptModule;
-#[cfg(feature = "sway")]
-use crate::modules::sway::mode::SwayModeModule;
 #[cfg(feature = "sys_info")]
 use crate::modules::sysinfo::SysInfoModule;
 #[cfg(feature = "tray")]
@@ -74,7 +72,7 @@ pub enum ModuleConfig {
     #[cfg(feature = "sys_info")]
     SysInfo(Box<SysInfoModule>),
     #[cfg(feature = "sway")]
-    SwayMode(Box<SwayModeModule>),
+    SwayMode(Box<Keymode>),
     #[cfg(any(feature = "sway", feature = "hyprland"))]
     Keymode(Box<Keymode>),
     #[cfg(feature = "tray")]
