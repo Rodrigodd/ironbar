@@ -96,7 +96,7 @@ impl Clients {
         let client = match &self.hyprland {
             Some(client) => client.clone(),
             None => {
-                let client = compositor::hyprland::Client::new();
+                let client = compositor::hyprland::Client::new()?;
                 let client = Arc::new(client);
                 self.hyprland.replace(client.clone());
                 client
