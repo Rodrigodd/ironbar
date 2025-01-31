@@ -31,8 +31,8 @@ pub mod clock;
 pub mod custom;
 #[cfg(feature = "focused")]
 pub mod focused;
-#[cfg(feature = "hyprland")]
-pub mod hyrland;
+#[cfg(any(feature = "hyprland", feature = "sway"))]
+pub mod keymode;
 pub mod label;
 #[cfg(feature = "launcher")]
 pub mod launcher;
