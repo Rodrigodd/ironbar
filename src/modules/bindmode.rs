@@ -103,6 +103,8 @@ impl Module<Label> for Bindmode {
         let label = Label::new(None);
         label.set_use_markup(true);
 
+        label.add_class("sway_mode");
+
         {
             let label = label.clone();
 
