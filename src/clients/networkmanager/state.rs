@@ -238,8 +238,13 @@ pub(super) fn determine_vpn_state(
     active_connections: &PathMap<ActiveConnectionDbusProxyBlocking>,
 ) -> Result<VpnState> {
     for connection in active_connections.values() {
-        match connection.type_()?.as_str() {
+        let Ok(connection_type) = connection.type_() else {
+            continue;
+        };
+        tracing::debug!("Connection type: {:?}", connection_type);
+        match connection_type.as_str() {
             "vpn" | "wireguard" => {
+                tracing::debug!("VPN connection found");
                 return Ok(VpnState::Connected(VpnConnectedState {
                     name: "unknown".into(),
                 }));

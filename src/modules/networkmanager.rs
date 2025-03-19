@@ -128,11 +128,21 @@ impl Module<GtkBox> for NetworkManagerModule {
             update_icon!(wifi_icon, wifi, {
                 WifiState::Connected(state) => {
                     let n = strengh_to_level(state.strength, self.icons.wifi.levels.len());
+                    tracing::debug!("Wifi strength: {}, level: {}, icon: {}", state.strength, n, self.icons.wifi.levels[n]);
                     &self.icons.wifi.levels[n]
                 },
-                WifiState::Disconnected => &self.icons.wifi.disconnected,
-                WifiState::Disabled => &self.icons.wifi.disabled,
-                WifiState::NotPresent | WifiState::Unknown => "",
+                WifiState::Disconnected => {
+                    tracing::debug!("Wifi disconnected");
+                    &self.icons.wifi.disconnected
+                },
+                WifiState::Disabled => {
+                    tracing::debug!("Wifi disabled");
+                    &self.icons.wifi.disabled
+                },
+                WifiState::NotPresent | WifiState::Unknown => {
+                    tracing::debug!("Wifi not present");
+                    ""
+                },
             });
             update_icon!(cellular_icon, cellular, {
                 CellularState::Connected => &self.icons.cellular.connected,
@@ -141,7 +151,10 @@ impl Module<GtkBox> for NetworkManagerModule {
                 CellularState::NotPresent | CellularState::Unknown => "",
             });
             update_icon!(vpn_icon, vpn, {
-                VpnState::Connected(_) => &self.icons.vpn.connected,
+                VpnState::Connected(_) => {
+                    tracing::debug!("VPN connected: {}", &self.icons.vpn.connected);
+                    &self.icons.vpn.connected
+                },
                 VpnState::Disconnected | VpnState::Unknown => "",
             });
         });

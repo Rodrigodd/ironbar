@@ -44,7 +44,7 @@ impl ClientInner<'static> {
             wired: determine_wired_state(&read_lock!(self.devices))?,
             wifi: determine_wifi_state(&Client(self.clone()))?,
             cellular: determine_cellular_state(&read_lock!(self.devices))?,
-            vpn: self.state.get_cloned().vpn,
+            vpn: determine_vpn_state(&read_lock!(self.active_connections))?,
         });
         Ok(())
     }
@@ -160,18 +160,21 @@ impl Client {
 
         // initialize active_connections proxys
         {
-            let active_connections = HashMap::new();
+            let mut active_connections = HashMap::new();
             for active_connection_path in self.0.root_object.active_connections()? {
                 let proxy = ActiveConnectionDbusProxyBlocking::builder(&self.0.dbus_connection)
                     .path(active_connection_path.clone())?
                     .build()?;
-                self.0
-                    .active_connections
-                    .write()
-                    .unwrap()
-                    .insert(active_connection_path, proxy);
+
+                active_connections.insert(active_connection_path, proxy);
             }
+            tracing::debug!("initialize active connections: {:?}", active_connections);
             *write_lock!(self.0.active_connections) = active_connections;
+
+            self.0.state.set(State {
+                vpn: determine_vpn_state(&read_lock!(self.0.active_connections))?,
+                ..self.0.state.get_cloned()
+            });
         }
 
         // initialize devices proxys and watchers
@@ -211,13 +214,12 @@ impl Client {
             |client| {
                 tracing::debug!("active connections changed");
                 client.state.set(State {
-                    wired: client.state.get_cloned().wired,
-                    wifi: client.state.get_cloned().wifi,
-                    cellular: client.state.get_cloned().cellular,
                     vpn: determine_vpn_state(&read_lock!(client.active_connections))?,
+                    ..client.state.get_cloned()
                 });
             }
         );
+
         spawn_path_list_watcher!(
             self.0,
             devices,
