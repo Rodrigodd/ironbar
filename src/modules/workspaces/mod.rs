@@ -406,6 +406,8 @@ impl Module<gtk::Box> for WorkspacesModule {
 
                             button.set_label(display_name);
                             button.set_widget_name(&name);
+
+                            reorder!();
                         }
                     }
                     WorkspaceUpdate::Urgent { id, urgent } if has_initialized => {
