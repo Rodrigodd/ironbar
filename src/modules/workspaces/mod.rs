@@ -191,11 +191,6 @@ fn reorder_workspaces(container: &gtk::Box, sort_order: SortOrder) {
         }
     });
 
-    // Ensure we have an even number of elements for window size
-    if buttons.len() % 2 == 1 {
-        buttons.push((String::new(), None));
-    }
-
     for window in buttons.windows(2) {
         if let [(_, a), (_, Some(b))] = window {
             container.reorder_child_after(b, a.as_ref());
